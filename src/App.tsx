@@ -1,25 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { ApolloClient, ApolloProvider, from, HttpLink, InMemoryCache } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
+import "./App.css";
+
+import { GetTasks } from "./Components/GetTasks";
+
+const errorLink = onError(({graphQLErrors, networkError}) => {
+  if (graphQLErrors) {
+    graphQLErrors.map(({message}) => {
+      alert(`Graphql error:${message}`);
+    });
+  }
+});
+const link = from([
+  errorLink,
+  new HttpLink({
+    uri: "https://graph.proworkflow.com/DEVTESTheorhii",
+    headers: {
+      "Authorization": "9C3T-BTCN-U7T6-F52K-PWFPYCH-TR115519"
+    }
+  })
+]);
+
 
 function App() {
+  const client = new ApolloClient({
+    link: link,
+    cache: new InMemoryCache(),
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={client}>
+      <GetTasks />
+    </ApolloProvider>
   );
 }
 
