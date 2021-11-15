@@ -15,13 +15,12 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
 const link = from([
   errorLink,
   new HttpLink({
-    uri: "https://graph.proworkflow.com/DEVTESTheorhii",
+    uri: `https://graph.proworkflow.com/${process.env.REACT_APP_PRO_WORKFLOW_WORKSPACE}`,
     headers: {
-      "Authorization": "9C3T-BTCN-U7T6-F52K-PWFPYCH-TR115519"
+      "Authorization": process.env.REACT_APP_PRO_WORKFLOW_API_KEY
     }
   })
 ]);
-
 
 function App() {
   const client = new ApolloClient({
