@@ -21,8 +21,7 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
   const [startTimerecord] = useMutation(START_TIMERECORD_MUTATION);
   const [stopTimerecord] = useMutation(STOP_TIMERECORD_MUTATION);
 
-  const displayedTime = moment(taskTotalTimespent, "minutes").format(timeFormat);
-
+  const displayedTime = moment.utc(moment.duration(taskTotalTimespent, "minutes").asMilliseconds()).format(timeFormat);
 
   const onStartTime = () => {
     startTimerecord({
