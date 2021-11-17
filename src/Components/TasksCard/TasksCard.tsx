@@ -14,6 +14,8 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
     name,
     description,
     timerecords,
+    displayedTimer,
+    isTracking,
     onStartTime,
     onStopTimer
   } = TasksCardHook(props);
@@ -26,19 +28,29 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
         {timerecords && timerecords?.length > 0
           ? (<TimeRecords timerecords={timerecords} />)
           : (<h4>This task without timerecords</h4>)}
-        <div>
-          <Button
-            variant="contained"
-            disabled={disabled}
-            onClick={onStartTime}>
-            Start Timer
-          </Button>
-          <Button
-            variant="contained"
-            disabled={disabled}
-            onClick={onStopTimer}>
-            Stop Timer
-          </Button>
+        <div className={styles.buttons}>
+          <div className={clsx(styles.tracker, {[styles.viewed]: !isTracking})}>
+            <Button
+              fullWidth
+              variant="contained"
+              disabled={disabled}
+              onClick={onStartTime}
+            >
+              Start Timer
+            </Button>
+          </div>
+
+          <div className={clsx(styles.tracker, {[styles.viewed]: isTracking})}>
+            <span><b>Time spend: </b></span>
+            <span>{displayedTimer} (HH:mm:ss)</span>
+            <Button
+              fullWidth
+              variant="contained"
+              disabled={disabled}
+              onClick={onStopTimer}>
+              Stop Timer
+            </Button>
+          </div>
         </div>
       </div>
     </div>
