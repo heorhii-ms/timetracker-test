@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useMutation } from "@apollo/client";
 
 import { GET_TASKS, START_TIMERECORD_MUTATION, STOP_TIMERECORD_MUTATION } from "~/Services/graphql/tasks";
@@ -9,6 +9,7 @@ import { fullTimeDurationConverter } from "~/utils/converters/fullTimeDurationCo
 
 export const TasksCardHook = (props: TasksCardProps) => {
   const {disabled = false, name, description, taskTotalTimespent, id, timerecords, project: {title}} = props;
+  const ref = useRef(id);
   const [isTracking, setIsTracking] = useState<boolean>(false);
   const [timer, setTimer] = useState<number>(0);
   const [notes, setNotes] = useState<string>("");
@@ -26,13 +27,18 @@ export const TasksCardHook = (props: TasksCardProps) => {
     };
   }, [isTracking]);
 
+  useEffect(() => {
+    if (!disabled) return;
+    // ref.current.focus();
+  }, [disabled]);
+
   const onStartTimer = () => {
     startTimerecord({
       variables:
         {
           input: {
             taskid: +id,
-            notes: 'Start notes'
+            notes: "Start notes"
           }
         }
     });
@@ -46,7 +52,7 @@ export const TasksCardHook = (props: TasksCardProps) => {
         {
           input: {
             taskid: +id,
-            notes: 'Stop notes'
+            notes: "Stop notes"
           }
         },
       refetchQueries: [
@@ -59,6 +65,7 @@ export const TasksCardHook = (props: TasksCardProps) => {
   };
 
   return {
+    ref,
     disabled,
     name,
     description,

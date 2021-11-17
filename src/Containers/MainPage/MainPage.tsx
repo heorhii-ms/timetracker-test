@@ -18,18 +18,20 @@ export const MainPage: React.FC = () => {
     console.log("-> data?.tasks", data?.tasks);
     if (!data?.tasks) return;
     setTasks(data.tasks);
-    // setValue(data.tasks[0].id);
   }, [data]);
 
-  if (!tasks) return null;
 
+  if (!tasks) return null;
+  console.log("-> tasks", tasks);
   return (
     <div className={styles.root}>
+
       <FormControl component="fieldset" className={styles.form}>
         <FormLabel component="legend">Tasks</FormLabel>
         <RadioGroup
           aria-label="task"
           name="radio-buttons-group"
+          defaultValue={tasks[0].id}
           value={value}
           onChange={(_, value) => {
             setValue(value);

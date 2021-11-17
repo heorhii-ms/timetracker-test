@@ -10,6 +10,7 @@ import clsx from "clsx";
 
 export const TasksCard: React.FC<TasksCardProps> = (props) => {
   const {
+    ref,
     disabled,
     name,
     description,
@@ -26,7 +27,7 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
 
   return (
     <div className={clsx(styles.root, {[styles.enable]: !disabled})}>
-      <h4>{name}</h4>
+      <h4 ref={ref}>Task: <i>{name}</i></h4>
       <span>{description}</span>
       <div className={clsx(styles.track_functionality, {[styles.viewed]: !disabled})}>
         {timerecords && timerecords?.length > 0
