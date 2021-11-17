@@ -3,9 +3,9 @@ import { useQuery } from "@apollo/client";
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 
-import { GET_TASKS } from "../../Services/Graphql/queries/tasksQueries";
-import { TasksCard } from "../../Components/TasksCard";
-import type { TasksQueryProps, TasksEntity } from "../../Services/Graphql/queries/interfaces/tasksQueriesInterfaces";
+import { GET_TASKS } from "~/Services/graphql/tasks";
+import { TasksCard } from "~/Components/TasksCard";
+import type { TasksQueryProps, TasksEntity } from "~/Services/graphql/tasks";
 
 import styles from "./MainPageStyles.module.scss";
 

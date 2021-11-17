@@ -1,63 +1,31 @@
-import React, { useEffect, useState } from "react";
-import moment from "moment";
+import React from "react";
 import { Button } from "@mui/material";
-import { useMutation } from "@apollo/client";
 
-
-import { timeFormat } from "../../constants";
-import { START_TIMERECORD_MUTATION, STOP_TIMERECORD_MUTATION } from "../../Services/Graphql/mutations/tasksMutations";
-import type { TasksEntity, TimerecordsEntity } from "../../Services/Graphql/queries/interfaces/tasksQueriesInterfaces";
+import { TimeRecords } from "~/Components/TimeRecords";
+import { TasksCardHook } from "~/Components/TasksCard/TasksCardHook";
+import type { TasksCardProps } from "./interfaces";
 
 import styles from "./TasksCardStyles.module.scss";
-import { StartTimerecordInput } from "Services/Graphql/queries/interfaces/tasksMutationsInterfaces";
-
-
-export type TasksCardProps = TasksEntity & {
-  disabled?: boolean
-}
+import clsx from "clsx";
 
 export const TasksCard: React.FC<TasksCardProps> = (props) => {
-  const {disabled = false, name, description, taskTotalTimespent, id} = props;
-  const [startTimerecord] = useMutation(START_TIMERECORD_MUTATION);
-  const [stopTimerecord] = useMutation(STOP_TIMERECORD_MUTATION);
-
-  const displayedTime = moment.utc(moment.duration(taskTotalTimespent, "minutes").asMilliseconds()).format(timeFormat);
-
-  const onStartTime = () => {
-    startTimerecord({
-      variables:
-        {
-          input: {
-            taskid: +id,
-            notes: "sddfdsdfdsf"
-          }
-        }
-    });
-  };
-
-  const onEndTimer = () => {
-    stopTimerecord({
-      variables:
-        {
-          input: {
-            taskid: +id,
-            notes: "sddfdsdfdsf"
-          }
-        }
-    });
-  };
+  const {
+    disabled,
+    name,
+    description,
+    timerecords,
+    onStartTime,
+    onEndTimer
+  } = TasksCardHook(props);
 
   return (
-    <div className={styles.root}>
-      <div className={styles.info}>
-        <h4>{name}</h4>
-        <span>{description}</span>
-      </div>
-      <div className={styles.tracker}>
-        <div>
-          <h4>Time</h4>
-          {displayedTime}
-        </div>
+    <div className={clsx(styles.root, {[styles.enable]: !disabled})}>
+      <h4>{name}</h4>
+      <span>{description}</span>
+      <div className={clsx(styles.track_functionality, {[styles.viewed]: !disabled})}>
+        {timerecords && timerecords?.length > 0
+          ? (<TimeRecords timerecords={timerecords} />)
+          : (<h4>This task without timerecords</h4>)}
         <div>
           <Button
             variant="contained"

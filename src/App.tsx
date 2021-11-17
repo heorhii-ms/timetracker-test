@@ -1,9 +1,9 @@
 import React from "react";
 
-import "./App.css";
+import "../src/Theme/global.scss";
 
-import { GraphqlProvider } from "../src/Services/Graphql/GraphqlProvider";
-import { MainPage } from "../src/Pages/MainPage";
+import { GraphqlProvider } from "~/Services/graphql/GraphqlProvider";
+import { MainPage } from "~/Containers/MainPage";
 
 function App() {
 

@@ -1,0 +1,16 @@
+@import "./variables/index.scss";
+
+#root {
+  box-sizing: border-box;
+  height: 100vh;
+  background: var(--color-aliceblue);
+  padding-top: 60px;
+}
+
+.MuiFormControlLabel-label {
+  width: 100% !important;
+}
+
+.MuiFormControl-root {
+  width: 100% !important;
+}

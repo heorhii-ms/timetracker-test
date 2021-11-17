@@ -1,3 +1,8 @@
+export interface StartTimerecordInput {
+  taskid: number
+  notes?: string
+}
+
 export interface TasksQueryProps {
   tasks: (TasksEntity)[] | null;
 }
@@ -6,9 +11,10 @@ export interface TasksEntity {
   id: string;
   name: string;
   description:string;
-  timerecords?: (TimerecordsEntity | null)[] | null;
+  timerecords: (TimerecordsEntity )[] | null;
   taskTotalTimespent: number;
 }
+
 export interface TimerecordsEntity {
   id: string;
   timespent: number;
@@ -19,9 +25,11 @@ export interface TimerecordsEntity {
   task: Task;
   contact: Contact;
 }
+
 export interface Task {
   id: string;
 }
+
 export interface Contact {
   id: string;
   fullname: string;
