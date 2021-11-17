@@ -1,14 +1,14 @@
 import { useMutation } from "@apollo/client";
 
-import { START_TIMERECORD_MUTATION, STOP_TIMERECORD_MUTATION } from "~/Services/graphql/tasks";
+import { GET_TASKS, START_TIMERECORD_MUTATION, STOP_TIMERECORD_MUTATION } from "~/Services/graphql/tasks";
 import { timeDurationConverter } from "~/utils/converters/timeDurationConverter";
 import type { TasksCardProps } from "./interfaces";
 
 
 export const TasksCardHook = (props: TasksCardProps) => {
-  const {disabled = false, name, description, taskTotalTimespent, id, timerecords} = props;
-  const [startTimerecord] = useMutation(START_TIMERECORD_MUTATION);
-  const [stopTimerecord] = useMutation(STOP_TIMERECORD_MUTATION);
+  const {disabled = false, name, description, taskTotalTimespent, id, timerecords, project: {title}} = props;
+  const [startTimerecord, startTimerecordState] = useMutation(START_TIMERECORD_MUTATION);
+  const [stopTimerecord, stopTimerecordState] = useMutation(STOP_TIMERECORD_MUTATION);
 
   const displayedTime = timeDurationConverter(taskTotalTimespent);
 
@@ -18,21 +18,25 @@ export const TasksCardHook = (props: TasksCardProps) => {
         {
           input: {
             taskid: +id,
-            notes: "sddfdsdfdsf"
+            notes: `${title} ${name}`
           }
         }
     });
   };
 
-  const onEndTimer = () => {
+  const onStopTimer = () => {
     stopTimerecord({
       variables:
         {
           input: {
             taskid: +id,
-            notes: "sddfdsdfdsf"
           }
-        }
+        },
+      refetchQueries: [
+        GET_TASKS,
+        "GET_TASKS"
+      ]
+
     });
   };
 
@@ -43,6 +47,6 @@ export const TasksCardHook = (props: TasksCardProps) => {
     displayedTime,
     timerecords,
     onStartTime,
-    onEndTimer
+    onStopTimer
   };
 };

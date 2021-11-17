@@ -18,6 +18,9 @@ query GET_TASKS {
   ) {
     id
     name
+    project {
+      title
+    }
     timerecords {
       ...TIMERECORD_INFO
     }

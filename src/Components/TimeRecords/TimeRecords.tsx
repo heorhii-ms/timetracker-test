@@ -9,6 +9,11 @@ import type { TimeRecordsProps } from "./interfaces";
 import styles from "./TimeRecordsStyles.module.scss";
 
 export const TimeRecords: React.FC<TimeRecordsProps> = ({timerecords}) => {
+  const displayedRecords =  timerecords.slice().sort((a, b) =>
+    +a.id < +b.id
+      ? 1
+      : +a.id > +b.id
+        ? -1 : 0);
 
   return (
     <TableContainer
@@ -28,24 +33,25 @@ export const TimeRecords: React.FC<TimeRecordsProps> = ({timerecords}) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {timerecords && timerecords.map(timerecord => {
-              const {id, notes, startdate, enddate, timespent, contact} = timerecord;
-              return (
-                <TableRow
-                  key={id}
-                  sx={{"&:last-child td, &:last-child th": {border: 0}}}
-                >
-                  <TableCell component="th" scope="row">
-                    {dataTimeToDateConverter(startdate)}
-                  </TableCell>
-                  <TableCell align="right">{dataTimeToTimeConverter(startdate)}</TableCell>
-                  <TableCell align="right">{dataTimeToTimeConverter(enddate)}</TableCell>
-                  <TableCell align="right">{timeDurationConverter(timespent)}</TableCell>
-                  <TableCell align="right">{contact.fullname}</TableCell>
-                  <TableCell align="right">{notes}</TableCell>
-                </TableRow>);
-            }
-          )}
+          {displayedRecords
+            .map(timerecord => {
+                const {id, notes, startdate, enddate, timespent, contact} = timerecord;
+                return (
+                  <TableRow
+                    key={id}
+                    sx={{"&:last-child td, &:last-child th": {border: 0}}}
+                  >
+                    <TableCell component="th" scope="row">
+                      {dataTimeToDateConverter(startdate)}
+                    </TableCell>
+                    <TableCell align="right">{dataTimeToTimeConverter(startdate)}</TableCell>
+                    <TableCell align="right">{dataTimeToTimeConverter(enddate)}</TableCell>
+                    <TableCell align="right">{timeDurationConverter(timespent)}</TableCell>
+                    <TableCell align="right">{contact.fullname}</TableCell>
+                    <TableCell align="right">{notes}</TableCell>
+                  </TableRow>);
+              }
+            )}
 
         </TableBody>
       </Table>

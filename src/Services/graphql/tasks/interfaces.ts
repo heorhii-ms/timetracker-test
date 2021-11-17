@@ -1,6 +1,6 @@
 export interface StartTimerecordInput {
-  taskid: number
-  notes?: string
+  taskid: number;
+  notes?: string;
 }
 
 export interface TasksQueryProps {
@@ -10,8 +10,11 @@ export interface TasksQueryProps {
 export interface TasksEntity {
   id: string;
   name: string;
-  description:string;
-  timerecords: (TimerecordsEntity )[] | null;
+  description: string;
+  project: {
+    title: string
+  };
+  timerecords: (TimerecordsEntity)[] | null;
   taskTotalTimespent: number;
 }
 

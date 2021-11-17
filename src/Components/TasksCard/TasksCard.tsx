@@ -15,7 +15,7 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
     description,
     timerecords,
     onStartTime,
-    onEndTimer
+    onStopTimer
   } = TasksCardHook(props);
 
   return (
@@ -36,7 +36,7 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
           <Button
             variant="contained"
             disabled={disabled}
-            onClick={onEndTimer}>
+            onClick={onStopTimer}>
             Stop Timer
           </Button>
         </div>
