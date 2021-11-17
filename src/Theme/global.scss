@@ -14,3 +14,11 @@
 .MuiFormControl-root {
   width: 100% !important;
 }
+
+.MuiFormControlLabel-labelPlacementEnd {
+  align-items: flex-start !important;
+}
+
+.MuiTableHead-root {
+  background: var(--color-gray) !important;
+}

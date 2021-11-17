@@ -11,6 +11,8 @@ export const TasksCardHook = (props: TasksCardProps) => {
   const {disabled = false, name, description, taskTotalTimespent, id, timerecords, project: {title}} = props;
   const [isTracking, setIsTracking] = useState<boolean>(false);
   const [timer, setTimer] = useState<number>(0);
+  const [notes, setNotes] = useState<string>("");
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const [startTimerecord, startTimerecordState] = useMutation(START_TIMERECORD_MUTATION);
   const [stopTimerecord, stopTimerecordState] = useMutation(STOP_TIMERECORD_MUTATION);
 
@@ -24,13 +26,13 @@ export const TasksCardHook = (props: TasksCardProps) => {
     };
   }, [isTracking]);
 
-  const onStartTime = () => {
+  const onStartTimer = () => {
     startTimerecord({
       variables:
         {
           input: {
             taskid: +id,
-            notes: `${title} ${name}`
+            notes: 'Start notes'
           }
         }
     });
@@ -38,11 +40,13 @@ export const TasksCardHook = (props: TasksCardProps) => {
   };
 
   const onStopTimer = () => {
+    setOpenModal(false);
     stopTimerecord({
       variables:
         {
           input: {
             taskid: +id,
+            notes: 'Stop notes'
           }
         },
       refetchQueries: [
@@ -58,11 +62,14 @@ export const TasksCardHook = (props: TasksCardProps) => {
     disabled,
     name,
     description,
-    displayedTime,
     timerecords,
     isTracking,
     displayedTimer,
-    onStartTime,
+    notes,
+    openModal,
+    setOpenModal,
+    setNotes,
+    onStartTimer,
     onStopTimer
   };
 };

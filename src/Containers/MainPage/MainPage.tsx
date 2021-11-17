@@ -18,7 +18,7 @@ export const MainPage: React.FC = () => {
     console.log("-> data?.tasks", data?.tasks);
     if (!data?.tasks) return;
     setTasks(data.tasks);
-    setValue(data.tasks[0].id);
+    // setValue(data.tasks[0].id);
   }, [data]);
 
   if (!tasks) return null;

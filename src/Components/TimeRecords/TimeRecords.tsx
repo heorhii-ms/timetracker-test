@@ -22,14 +22,14 @@ export const TimeRecords: React.FC<TimeRecordsProps> = ({timerecords}) => {
       className={styles.root}
     >
       <Table aria-label="a time records table">
-        <TableHead>
+        <TableHead >
           <TableRow>
             <TableCell>Start date</TableCell>
-            <TableCell align="right">Start time</TableCell>
-            <TableCell align="right">Stop time</TableCell>
-            <TableCell align="right">Time tracked</TableCell>
-            <TableCell align="right">Tracked by</TableCell>
-            <TableCell align="right">Notes</TableCell>
+            <TableCell align="center">Start time</TableCell>
+            <TableCell align="center">Stop time</TableCell>
+            <TableCell align="center">Time tracked</TableCell>
+            <TableCell align="center">Tracked by</TableCell>
+            <TableCell align="center">Notes</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -44,10 +44,10 @@ export const TimeRecords: React.FC<TimeRecordsProps> = ({timerecords}) => {
                     <TableCell component="th" scope="row">
                       {dataTimeToDateConverter(startdate)}
                     </TableCell>
-                    <TableCell align="right">{dataTimeToTimeConverter(startdate)}</TableCell>
-                    <TableCell align="right">{dataTimeToTimeConverter(enddate)}</TableCell>
-                    <TableCell align="right">{timeDurationConverter(timespent)}</TableCell>
-                    <TableCell align="right">{contact.fullname}</TableCell>
+                    <TableCell align="center">{dataTimeToTimeConverter(startdate)}</TableCell>
+                    <TableCell align="center">{dataTimeToTimeConverter(enddate)}</TableCell>
+                    <TableCell align="center">{timeDurationConverter(timespent)}</TableCell>
+                    <TableCell align="center">{contact.fullname}</TableCell>
                     <TableCell align="right">{notes}</TableCell>
                   </TableRow>);
               }

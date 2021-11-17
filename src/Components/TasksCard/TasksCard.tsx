@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { Button, Modal, TextField } from "@mui/material";
 
 import { TimeRecords } from "~/Components/TimeRecords";
 import { TasksCardHook } from "~/Components/TasksCard/TasksCardHook";
@@ -14,9 +14,13 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
     name,
     description,
     timerecords,
-    displayedTimer,
     isTracking,
-    onStartTime,
+    displayedTimer,
+    notes,
+    openModal,
+    setOpenModal,
+    setNotes,
+    onStartTimer,
     onStopTimer
   } = TasksCardHook(props);
 
@@ -34,7 +38,7 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
               fullWidth
               variant="contained"
               disabled={disabled}
-              onClick={onStartTime}
+              onClick={onStartTimer}
             >
               Start Timer
             </Button>
@@ -47,12 +51,49 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
               fullWidth
               variant="contained"
               disabled={disabled}
-              onClick={onStopTimer}>
+              onClick={() => {
+                setOpenModal(true);
+              }}>
               Stop Timer
             </Button>
+            <Modal
+              open={openModal}
+              onClose={onStopTimer}
+              aria-labelledby="parent-modal-title"
+              aria-describedby="parent-modal-description">
+              <div className={styles.modal}>
+                <TextField
+                  id="outlined-multiline-flexible"
+                  label="Notes"
+                  multiline
+                  // maxRows={4}
+                  value={notes}
+                  onChange={(event) => {
+                    setNotes(event.target.value);
+                  }}
+                />
+                <div>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    onClick={onStopTimer}>
+                    Add notes
+                  </Button>
+                  <Button
+                    fullWidth
+                    color="error"
+                    variant="contained"
+                    onClick={onStopTimer}>
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </Modal>
+
           </div>
         </div>
       </div>
     </div>
-  );
+  )
+    ;
 };
