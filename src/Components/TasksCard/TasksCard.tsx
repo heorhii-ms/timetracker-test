@@ -64,10 +64,10 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
               aria-describedby="parent-modal-description">
               <div className={styles.modal}>
                 <TextField
+                  autoFocus
                   id="outlined-multiline-flexible"
                   label="Notes"
                   multiline
-                  // maxRows={4}
                   value={notes}
                   onChange={(event) => {
                     setNotes(event.target.value);

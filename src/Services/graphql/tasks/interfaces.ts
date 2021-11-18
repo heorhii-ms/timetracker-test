@@ -4,7 +4,7 @@ export interface StartTimerecordInput {
 }
 
 export interface TasksQueryProps {
-  tasks: (TasksEntity)[] | null;
+  tasks: (TasksEntity)[];
 }
 
 export interface TasksEntity {
@@ -14,7 +14,7 @@ export interface TasksEntity {
   project: {
     title: string
   };
-  timerecords: (TimerecordsEntity)[] | null;
+  timerecords: (TimerecordsEntity)[];
   taskTotalTimespent: number;
 }
 

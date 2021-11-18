@@ -4,7 +4,7 @@ import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mu
 
 import { GET_TASKS } from "~/Services/graphql/tasks";
 import { TasksCard } from "~/Components/TasksCard";
-import type { TasksQueryProps, TasksEntity } from "~/Services/graphql/tasks";
+import type { TasksEntity, TasksQueryProps } from "~/Services/graphql/tasks";
 
 import styles from "./MainPageStyles.module.scss";
 
@@ -17,7 +17,9 @@ export const MainPage: React.FC = () => {
   useEffect(() => {
     if (!data?.tasks) return;
     setTasks(data.tasks);
-    setValue(data.tasks[0].id);
+    if (!value) {
+      setValue(data.tasks[0].id);
+    }
   }, [data]);
 
   if (loading) return <div className={styles.root}><h3>Loading...</h3></div>;
