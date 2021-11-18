@@ -8,16 +8,15 @@ import { fullTimeDurationConverter } from "~/utils/converters/fullTimeDurationCo
 
 
 export const TasksCardHook = (props: TasksCardProps) => {
-  const {disabled = false, name, description, taskTotalTimespent, id, timerecords, project: {title}} = props;
+  const {disabled = false, name, description, id, timerecords, project: {title}} = props;
   const h1Ref = useRef<HTMLHeadingElement>(null);
   const [isTracking, setIsTracking] = useState<boolean>(false);
   const [timer, setTimer] = useState<number>(0);
   const [notes, setNotes] = useState<string>("");
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [startTimerecord, startTimerecordState] = useMutation(START_TIMERECORD_MUTATION);
-  const [stopTimerecord, stopTimerecordState] = useMutation(STOP_TIMERECORD_MUTATION);
+  const [startTimerecord] = useMutation(START_TIMERECORD_MUTATION);
+  const [stopTimerecord] = useMutation(STOP_TIMERECORD_MUTATION);
 
-  const displayedTime = timeDurationConverter(taskTotalTimespent);
   const displayedTimer = fullTimeDurationConverter(timer);
   useEffect(() => {
     if (!isTracking) return;
@@ -28,8 +27,7 @@ export const TasksCardHook = (props: TasksCardProps) => {
   }, [isTracking]);
 
   useLayoutEffect(() => {
-    if (disabled) return;
-    console.log("-> h1Ref", h1Ref);
+    if (!disabled) return;
     h1Ref.current?.focus();
   }, [disabled]);
 

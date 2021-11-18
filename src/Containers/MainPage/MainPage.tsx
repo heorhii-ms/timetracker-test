@@ -11,27 +11,29 @@ import styles from "./MainPageStyles.module.scss";
 
 export const MainPage: React.FC = () => {
   const {error, loading, data} = useQuery<TasksQueryProps>(GET_TASKS);
-  const [tasks, setTasks] = useState<TasksEntity[] | null>(null);
+  const [tasks, setTasks] = useState<TasksEntity[]>([]);
   const [value, setValue] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("-> data?.tasks", data?.tasks);
     if (!data?.tasks) return;
     setTasks(data.tasks);
+    setValue(data.tasks[0].id);
   }, [data]);
 
+  if (loading) return <div className={styles.root}><h3>Loading...</h3></div>;
+  if (error) return <div className={styles.root}><h3>Error: {error.message}</h3></div>;
 
-  if (!tasks) return null;
-  console.log("-> tasks", tasks);
+  if (tasks.length === 0) return null;
+
   return (
     <div className={styles.root}>
 
       <FormControl component="fieldset" className={styles.form}>
+
         <FormLabel component="legend">Tasks</FormLabel>
         <RadioGroup
           aria-label="task"
           name="radio-buttons-group"
-          defaultValue={tasks[0].id}
           value={value}
           onChange={(_, value) => {
             setValue(value);
