@@ -4,16 +4,22 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import { timeDurationConverter } from "~/utils/converters/timeDurationConverter";
 import { dataTimeToTimeConverter } from "~/utils/converters/dataTimeToTimeConverter";
 import { dataTimeToDateConverter } from "~/utils/converters/dataTimeToDateConverter";
+import { NotesModal } from "~/Components/NotesModal";
+import { TimeRecordsHook } from "~/Components/TimeRecords/TimeRecordsHook";
 import type { TimeRecordsProps } from "./interfaces";
 
 import styles from "./TimeRecordsStyles.module.scss";
 
-export const TimeRecords: React.FC<TimeRecordsProps> = ({timerecords}) => {
-  const displayedRecords =  timerecords.slice().sort((a, b) =>
-    +a.id < +b.id
-      ? 1
-      : +a.id > +b.id
-        ? -1 : 0);
+export const TimeRecords: React.FC<TimeRecordsProps> = (props) => {
+  const {
+    displayedRecords,
+    openModal,
+    editedNotes,
+    setEditedNotes,
+    onEditNotes,
+    onAddNotes,
+    closeModal
+  } = TimeRecordsHook(props);
 
   return (
     <TableContainer
@@ -22,7 +28,7 @@ export const TimeRecords: React.FC<TimeRecordsProps> = ({timerecords}) => {
       className={styles.root}
     >
       <Table aria-label="a time records table">
-        <TableHead >
+        <TableHead>
           <TableRow>
             <TableCell>Start date</TableCell>
             <TableCell align="center">Start time</TableCell>
@@ -48,7 +54,16 @@ export const TimeRecords: React.FC<TimeRecordsProps> = ({timerecords}) => {
                     <TableCell align="center">{dataTimeToTimeConverter(enddate)}</TableCell>
                     <TableCell align="center">{timeDurationConverter(timespent)}</TableCell>
                     <TableCell align="center">{contact.fullname}</TableCell>
-                    <TableCell align="right">{notes}</TableCell>
+                    <TableCell align="right">
+                      {notes}&nbsp;
+                      <button onClick={() => onEditNotes(notes)}>Edit</button>
+                      <NotesModal
+                        value={editedNotes}
+                        onChange={setEditedNotes}
+                        openModal={openModal}
+                        onAdd={() => onAddNotes(id)}
+                        onCancel={closeModal} />
+                    </TableCell>
                   </TableRow>);
               }
             )}

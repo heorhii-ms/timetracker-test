@@ -20,7 +20,6 @@ export const MainPage: React.FC = () => {
   const [value, setValue] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("-> data", data);
     if (!data?.tasks) return;
     setTasks(data.tasks);
     if (!value) {

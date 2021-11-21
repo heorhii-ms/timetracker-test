@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Modal, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 
 import { TimeRecords } from "~/Components/TimeRecords";
 import { TasksCardHook } from "~/Components/TasksCard/TasksCardHook";
@@ -7,6 +7,7 @@ import type { TasksCardProps } from "./interfaces";
 
 import styles from "./TasksCardStyles.module.scss";
 import clsx from "clsx";
+import { NotesModal } from "~/Components/NotesModal";
 
 export const TasksCard: React.FC<TasksCardProps> = (props) => {
   const {
@@ -22,12 +23,13 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
     setOpenModal,
     setNotes,
     onStartTimer,
-    onStopTimer
+    onAddNotes,
+    onCancel,
   } = TasksCardHook(props);
 
   return (
     <div className={clsx(styles.root, {[styles.enable]: !disabled})}>
-      <h4 ref={h1Ref}>Task: <i>{name}</i></h4>
+      <h4 ref={ref => h1Ref.current = ref!}>Task: <i>{name}</i></h4>
       <span>{description}</span>
       <div className={clsx(styles.track_functionality, {[styles.viewed]: !disabled})}>
         {timerecords && timerecords?.length > 0
@@ -57,44 +59,15 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
               }}>
               Stop Timer
             </Button>
-            <Modal
-              open={openModal}
-              onClose={onStopTimer}
-              aria-labelledby="parent-modal-title"
-              aria-describedby="parent-modal-description">
-              <div className={styles.modal}>
-                <TextField
-                  autoFocus
-                  id="outlined-multiline-flexible"
-                  label="Notes"
-                  multiline
-                  value={notes}
-                  onChange={(event) => {
-                    setNotes(event.target.value);
-                  }}
-                />
-                <div>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    onClick={onStopTimer}>
-                    Add notes
-                  </Button>
-                  <Button
-                    fullWidth
-                    color="error"
-                    variant="contained"
-                    onClick={onStopTimer}>
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            </Modal>
-
+            <NotesModal
+              value={notes}
+              onChange={setNotes}
+              openModal={openModal}
+              onAdd={onAddNotes}
+              onCancel={onCancel} />
           </div>
         </div>
       </div>
     </div>
-  )
-    ;
+  );
 };

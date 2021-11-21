@@ -1,21 +1,20 @@
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation } from "@apollo/client";
 
 import { FILTER_TASKS, START_TIMERECORD_MUTATION, STOP_TIMERECORD_MUTATION } from "~/Services/graphql/tasks";
-import { timeDurationConverter } from "~/utils/converters/timeDurationConverter";
 import type { TasksCardProps } from "./interfaces";
 import { fullTimeDurationConverter } from "~/utils/converters/fullTimeDurationConverter";
 
 
 export const TasksCardHook = (props: TasksCardProps) => {
   const {disabled = false, name, description, id, timerecords, project: {title}} = props;
-  const h1Ref = useRef<HTMLHeadingElement>(null);
+  const h1Ref = useRef<HTMLHeadingElement>();
   const [isTracking, setIsTracking] = useState<boolean>(false);
   const [timer, setTimer] = useState<number>(0);
   const [notes, setNotes] = useState<string>("");
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [startTimerecord] = useMutation(START_TIMERECORD_MUTATION);
-  const [stopTimerecord] = useMutation(STOP_TIMERECORD_MUTATION);
+  const [startTimerecord, startTimerecordResult] = useMutation(START_TIMERECORD_MUTATION);
+  const [stopTimerecord, stopTimerecordResult] = useMutation(STOP_TIMERECORD_MUTATION);
 
   const displayedTimer = fullTimeDurationConverter(timer);
   useEffect(() => {
@@ -26,10 +25,21 @@ export const TasksCardHook = (props: TasksCardProps) => {
     };
   }, [isTracking]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!disabled) return;
-    h1Ref.current?.focus();
+    h1Ref.current!.focus();
   }, [disabled]);
+
+  useEffect(() => {
+    if (startTimerecordResult.error || stopTimerecordResult.error) {
+      const conf = window.confirm("Something went wrong, please reload page");
+      if (conf) {
+        window.location.reload();
+      } else {
+        window.location.reload();
+      }
+    }
+  }, [startTimerecordResult.error, stopTimerecordResult.error]);
 
   const onStartTimer = () => {
     startTimerecord({
@@ -44,14 +54,14 @@ export const TasksCardHook = (props: TasksCardProps) => {
     setIsTracking(!isTracking);
   };
 
-  const onStopTimer = () => {
+  const addNotes = (notes: string) => {
     setOpenModal(false);
     stopTimerecord({
       variables:
         {
           input: {
             taskid: +id,
-            notes: notes || `${title} - ${name}`
+            notes: notes
           }
         },
       refetchQueries: [
@@ -60,7 +70,17 @@ export const TasksCardHook = (props: TasksCardProps) => {
       ]
 
     });
+    setTimer(0);
     setIsTracking(!isTracking);
+  };
+
+  const onAddNotes = () => {
+    addNotes(notes || `${title} - ${name}`);
+
+  };
+
+  const onCancel = () => {
+    addNotes(`${title} - ${name}`);
   };
 
   return {
@@ -76,6 +96,7 @@ export const TasksCardHook = (props: TasksCardProps) => {
     setOpenModal,
     setNotes,
     onStartTimer,
-    onStopTimer
+    onAddNotes,
+    onCancel
   };
 };
