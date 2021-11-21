@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { useMutation } from "@apollo/client";
 
-import { GET_TASKS, START_TIMERECORD_MUTATION, STOP_TIMERECORD_MUTATION } from "~/Services/graphql/tasks";
+import { FILTER_TASKS, START_TIMERECORD_MUTATION, STOP_TIMERECORD_MUTATION } from "~/Services/graphql/tasks";
 import { timeDurationConverter } from "~/utils/converters/timeDurationConverter";
 import type { TasksCardProps } from "./interfaces";
 import { fullTimeDurationConverter } from "~/utils/converters/fullTimeDurationConverter";
@@ -55,7 +55,7 @@ export const TasksCardHook = (props: TasksCardProps) => {
           }
         },
       refetchQueries: [
-        GET_TASKS,
+        FILTER_TASKS,
         "GET_TASKS"
       ]
 
