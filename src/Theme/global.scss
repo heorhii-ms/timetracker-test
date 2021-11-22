@@ -4,7 +4,8 @@
   box-sizing: border-box;
   height: 100vh;
   background: var(--color-aliceblue);
-  padding-top: 60px;
+  padding: 60px 0;
+  overflow-y: scroll;
 }
 
 .MuiAutocomplete-root {
