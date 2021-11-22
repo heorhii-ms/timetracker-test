@@ -49,7 +49,7 @@ export const TasksCard: React.FC<TasksCardProps> = (props) => {
 
           <div className={clsx(styles.tracker, {[styles.viewed]: isTracking})}>
             <span><b>Time spend: </b></span>
-            <span>{displayedTimer} (HH:mm:ss)</span>
+            <span>{displayedTimer} (HH:mm)</span>
             <Button
               fullWidth
               variant="contained"

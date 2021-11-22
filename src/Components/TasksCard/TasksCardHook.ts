@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useMutation } from "@apollo/client";
 
 import { FILTER_TASKS, START_TIMERECORD_MUTATION, STOP_TIMERECORD_MUTATION } from "~/Services/graphql/tasks";
+import { timeDurationConverter } from "~/utils/converters/timeDurationConverter";
 import type { TasksCardProps } from "./interfaces";
-import { fullTimeDurationConverter } from "~/utils/converters/fullTimeDurationConverter";
 
 
 export const TasksCardHook = (props: TasksCardProps) => {
@@ -16,10 +16,10 @@ export const TasksCardHook = (props: TasksCardProps) => {
   const [startTimerecord, startTimerecordResult] = useMutation(START_TIMERECORD_MUTATION);
   const [stopTimerecord, stopTimerecordResult] = useMutation(STOP_TIMERECORD_MUTATION);
 
-  const displayedTimer = fullTimeDurationConverter(timer);
+  const displayedTimer = timeDurationConverter(timer);
   useEffect(() => {
     if (!isTracking) return;
-    const timerId = setInterval(() => setTimer(prev => prev + 1), 1000);
+    const timerId = setInterval(() => setTimer(prev => prev + 1), 60000);
     return () => {
       clearInterval(timerId);
     };
